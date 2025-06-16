@@ -20,7 +20,7 @@ cmake_minimum_required(VERSION 3.12)
 if (DEFINED ENV{FREERTOS_PATH})
   SET(FREERTOS_PATH $ENV{FREERTOS_PATH})
 else()
-  SET(FREERTOS_PATH ${CMAKE_CURRENT_LIST_DIR}/FreeRTOS-Kernel)
+  SET(FREERTOS_PATH ${CMAKE_CURRENT_LIST_DIR}/FreeRTOS)
 endif()
 
 message("FreeRTOS Kernel located in ${FREERTOS_PATH}")
@@ -30,27 +30,29 @@ include(pico_sdk_import.cmake)
 include(${FREERTOS_PATH}/portable/ThirdParty/GCC/RP2040/FreeRTOS_Kernel_import.cmake)
 
 # Define project
-project(embarcatech-tarefa-freertos-2 C CXX ASM)
+project(tarefa-freertos-2-davi-e-jose C CXX ASM)
 
 # Initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-add_executable(embarcatech-tarefa-freertos-2
+add_executable(tarefa-freertos-2-davi-e-jose
     main.c
 )
 
-target_include_directories(embarcatech-tarefa-freertos-2 PRIVATE
+target_include_directories(tarefa-freertos-2-davi-e-jose PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
     ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
-target_link_libraries(embarcatech-tarefa-freertos-2 
+target_link_libraries(tarefa-freertos-2-davi-e-jose 
     pico_stdlib 
     FreeRTOS-Kernel-Heap4 
     hardware_i2c
+    hardware_adc
+    hardware_dma
     )
 
-pico_add_extra_outputs(embarcatech-tarefa-freertos-2)
+pico_add_extra_outputs(tarefa-freertos-2-davi-e-jose)
 
 # if you have anything in "lib" folder then uncomment below - remember to add a CMakeLists.txt
 # file to the "lib" directory
