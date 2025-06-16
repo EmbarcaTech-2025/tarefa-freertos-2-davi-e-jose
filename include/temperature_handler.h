@@ -3,7 +3,9 @@
 
 #include <stdint.h>
 
-extern double temperature[10];
+#define ADC_TEMPERATURE_CHANNEL 4
+
+extern double temperature;
 
 extern void get_celsius(void *pvParameters);
 

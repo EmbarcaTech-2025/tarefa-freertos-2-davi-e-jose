@@ -1,20 +1,22 @@
 # == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
 if(WIN32)
-    set(USERHOME $ENV{USERPROFILE})
+  set(USERHOME $ENV{USERPROFILE})
 else()
-    set(USERHOME $ENV{HOME})
+  set(USERHOME $ENV{HOME})
 endif()
 set(sdkVersion 2.1.1)
 set(toolchainVersion 14_2_Rel1)
 set(picotoolVersion 2.1.1)
 set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
 if (EXISTS ${picoVscode})
-    include(${picoVscode})
+  include(${picoVscode})
 endif()
 # ====================================================================================
 set(PICO_BOARD pico CACHE STRING "Board type")
 
 cmake_minimum_required(VERSION 3.12)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Set any variables required for importing libraries
 if (DEFINED ENV{FREERTOS_PATH})
@@ -41,6 +43,7 @@ add_executable(tarefa-freertos-2-davi-e-jose
     src/display_oled.c
     src/microphone_handler.c
     src/temperature_handler.c
+    src/button_handler.c
 )
 
 target_include_directories(tarefa-freertos-2-davi-e-jose PRIVATE
@@ -48,12 +51,13 @@ target_include_directories(tarefa-freertos-2-davi-e-jose PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
-target_link_libraries(tarefa-freertos-2-davi-e-jose 
-    pico_stdlib 
-    FreeRTOS-Kernel-Heap4 
+target_link_libraries(tarefa-freertos-2-davi-e-jose
+    pico_stdlib
+    FreeRTOS-Kernel-Heap4
     hardware_i2c
     hardware_adc
     hardware_dma
+    hardware_irq
     )
 
 pico_add_extra_outputs(tarefa-freertos-2-davi-e-jose)
