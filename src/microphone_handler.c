@@ -1,24 +1,16 @@
-#include "FreeRTOS.h"
-#include "task.h"
-#include <stdio.h>
+#include "microphone_handler.h"
+#include "rtos_resources.h"
+#include "semphr.h"
+#include "display_oled.h"
 #include <math.h>
-#include "pico/stdlib.h"
-
-#include "hardware/i2c.h"
-#include "hardware/adc.h"
-#include "hardware/dma.h"
-
-#define MIC_CHANNEL 2 // Canal ADC do microfone
-#define MIC_ADC_PIN 28 // Pino do ADC
-#define ADC_CLOCK_DIV 96.f // Divisor de clock do ADC
-#define SAMPLES 200 // Número de amostras 
-#define ADC_RESOLUTION (1 << 12)  // Resolução do ADC (12-bit ADC -> 4096 níveis)
-#define V_REF 3.3f  // Tensão de referência do ADC
-#define MIC_OFFSET 1.65f  // Offset do sinal do microfone (meio da escala de 3.3V)
+#include <stdio.h> // Biblioteca padrão 
+#include "pico/stdlib.h" // Biblioteca padrão pico
 
 uint dma_channel; // Canal DMA
 dma_channel_config dma_cfg; // Configuração do DMA
 uint16_t adc_buffer[SAMPLES]; // Buffer de armazenamento de amostras de ADC
+
+TaskHandle_t microphone_task_handle = NULL;
 
 // Função para configuração do ADC
 void setup_adc(){
@@ -85,24 +77,15 @@ float convert_to_dB(float v_rms) {
   return 20.0f * log10f(v_rms / ref_voltage);  // Cálculo para conversão para dB
 }
 
-TaskHandle_t microphone_task_handle = NULL;
-void microphone_task() {
+void microphone_task(void *pvParameters) {
   while (1) {
-    sample_mic(); // Coleta de amostras do microfone via DMA
-    float v_rms = mic_rms(); // Cálculo da potência RMS
-    float dB = convert_to_dB(v_rms); // Conversão para dB
-    vTaskDelay(pdMS_TO_TICKS(1000)); // Atraso de 1 segundo
+    if (xSemaphoreTake(rMutex, (TickType_t)10)){
+      sample_mic(); // Coleta de amostras do microfone via DMA
+      float v_rms = mic_rms(); // Cálculo da potência RMS
+      float dB = convert_to_dB(v_rms); // Conversão para dB
+      display_oled(dB, "dB"); 
+      xSemaphoreGive(rMutex);
+      vTaskDelay(pdMS_TO_TICKS(1000)); // Atraso de 1 segundo
+    }
   }
-}
-
-int main() {
-  stdio_init_all();
-  setup_adc(); 
-  setup_dma(); 
-
-  xTaskCreate(microphone_task, "Microphone_Task", 256, NULL, 1, &microphone_task_handle);
-
-  vTaskStartScheduler();
-
-  while(1){};
 }

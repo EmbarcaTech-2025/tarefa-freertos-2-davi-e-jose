@@ -4,6 +4,6 @@
 #include "FreeRTOS.h"
 #include "semphr.h"
 
-SemaphoreHandle_t rMutex;
+extern SemaphoreHandle_t rMutex;
 
 #endif // !RTOS_RESOURCES

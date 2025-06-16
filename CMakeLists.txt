@@ -36,7 +36,11 @@ project(tarefa-freertos-2-davi-e-jose C CXX ASM)
 pico_sdk_init()
 
 add_executable(tarefa-freertos-2-davi-e-jose
-    main.c
+    src/main.c
+    inc/ssd1306_i2c.c
+    src/display_oled.c
+    src/microphone_handler.c
+    src/temperature_handler.c
 )
 
 target_include_directories(tarefa-freertos-2-davi-e-jose PRIVATE

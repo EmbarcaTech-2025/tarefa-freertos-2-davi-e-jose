@@ -1,4 +1,5 @@
 #include "temperature_handler.h"
+#include "display_oled.h"
 #include "hardware/adc.h"
 #include "projdefs.h"
 #include "rtos_resources.h"
@@ -31,6 +32,7 @@ void get_celsius(void *pvParameters) {
       double fahrenheit = adc_to_fahrenheit(adc_value);
       temperature[tx] = fahrenheit_to_celsius(fahrenheit);
       tx = (tx + 1) % 10;
+      display_oled(temperature[tx], "C");
       xSemaphoreGive(rMutex);
       vTaskDelay(pdMS_TO_TICKS(50));
     }
