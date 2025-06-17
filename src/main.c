@@ -3,6 +3,7 @@
 #include "pico/stdlib.h"
 #include "task.h"
 #include <stdio.h>
+#include <string.h>
 
 #include "button_handler.h"
 #include "display_oled.h"
@@ -16,7 +17,7 @@ int main() {
   setup_adc();
   setup_dma();
   init_buttons();
-  display_oled(0, "AB");
+  xTaskCreate(idle_display_task, "IdleDisplay", 256, NULL, 1, NULL);
 
   vTaskStartScheduler();
 

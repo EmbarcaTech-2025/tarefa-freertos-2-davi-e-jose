@@ -12,4 +12,7 @@ void setup_oled();
 
 void display_oled(float value, char unit[2]);
 
+void display_oled_idle();
+
+void idle_display_task(void *params);
 #endif // DISPLAY_OLED_H

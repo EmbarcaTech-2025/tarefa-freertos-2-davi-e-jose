@@ -6,6 +6,7 @@
 #include "rtos_resources.h"
 #include "temperature_handler.h"
 #include <pico/stdlib.h>
+#include <string.h>
 
 absolute_time_t last_press_time_a = 0;
 absolute_time_t last_press_time_b = 0;
@@ -22,7 +23,7 @@ static void buttons_callback(uint gpio, uint32_t events) {
       if (state == TEMP) {
         vTaskDelete(temp_handle);
         state = IDLE;
-        display_oled(0, "AB");
+        display_oled_idle();
         // Placeholder pra indicar que não está executando uma tarefa
         return;
       }
@@ -42,7 +43,7 @@ static void buttons_callback(uint gpio, uint32_t events) {
       if (state == MIC) {
         vTaskDelete(mic_handle);
         state = IDLE;
-        display_oled(0, "AB");
+        display_oled_idle();
         // Placeholder pra indicar que não está executando uma tarefa
         return;
       }
