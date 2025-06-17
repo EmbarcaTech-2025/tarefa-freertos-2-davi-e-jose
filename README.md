@@ -11,6 +11,40 @@ Brasília, Junho de 2025
 
 ---
 
+## 📃 Descrição do projeto
+
+Neste projeto foi desenvolvido um sistema que consegue mostrar para o usuário informações sobre a temperatura interna do microcontrolador e o nível sonoro do ambiente, sendo este sistema controlado pelo Kernel do FreeRTOS rodando na BitDogLab.
+
+---
+
+## ✅ Objetivos
+
+1. Criar um sistema que consegue utilizar os componentes presentes na BitDogLab para obter a temperatura interna do microcontrolador e o nível sonoro do ambiente.
+2. Mostrar essas informações ao usuário utilizando o display OLED, permitindo que o usuário possa escolher qual informação ele quer no momento utilizando os botões da placa.
+3. Controlar as tarefas de coleta de dados e visualização no display utilizando o Kernel FreeRTOS.
+
+---
+
+## 🧰 Componentes Utilizados
+
+Neste projeto foram utilizados os seguintes componentes da BitDogLab:
+
+- Microfone
+- Display OLED
+- Botões A e B
+
+---
+
+## 📁 Estrutura de Pastas do Projeto
+
+O projeto está organizado nas seguintes pastas:
+
+- `inc/`: pasta com código-fonte e headers feitos por terceiros.
+- `include/`: pasta com os headers de cada módulo, além de arquivos de configuração.
+- `src/`: pasta com o código-fonte do projeto, cada componente tem suas funções definidas num arquivo exclusivo do componente.
+
+---
+
 ## ⚡ Pinagem
 
 | Componente  | Pino GPIO  |
@@ -24,12 +58,15 @@ Brasília, Junho de 2025
 ---
 
 ## ⚙️ Como compilar e executar
+
 1. **Primeiramente, clone o repositório com o comando**:
+
 ```
   git clone https://github.com/EmbarcaTech-2025/tarefa-freertos-2-davi-e-jose.git
 ```
 
 2. **Após isso, é necessário adicionar a pasta FreeRTOS ao projeto por meio dos comandos**:
+
 ```
 cd tarefa-freertos-2-davi-e-jose
 git clone https://github.com/FreeRTOS/FreeRTOS-Kernel.git FreeRTOS
@@ -40,41 +77,46 @@ git clone https://github.com/FreeRTOS/FreeRTOS-Kernel.git FreeRTOS
 Observação: escolha a versão 2.1.1 do Pico-SDK
 
 4. **Nesta etapa, no terminal, digite os seguintes comandos:**
+
 ```
   cd build
   cmake ..
-``` 
+```
 
 5. **Após isso, aperte o ícone `Compile Project`** para compilar o projeto.
 
 6. **Conecte o Pico via USB segurando o botão BOOTSEL** e aperte o ícone `Run Project (USB)` para gravar o projeto.
+
 ---
 
 ## 📈 Resultados esperados ou observados
 
 Ao executar o código, espera-se o seguinte comportamento:
 
-1.  **Inicialização do Sistema**:
-  * Após a energização da BitDogLab, o sistema inicializa os periféricos: Display Oled, ADC, DMA e botões.
+1. **Inicialização do Sistema**:
 
-  * A tarefa para quando o Display está ocioso é criada.
+- Após a energização da BitDogLab, o sistema inicializa os periféricos: Display Oled, ADC, DMA e botões.
 
-  * O Kernel Scheduler é inicializado.
+- A tarefa para quando o Display está ocioso é criada.
 
-  * O Display Oled mostra a seguinte mensagem:
+- O Kernel Scheduler é inicializado.
+
+- O Display Oled mostra a seguinte mensagem:
+
     ```
     Monitoramento
     Press A: Temp
     Press B: Mic
     ```
-  * Isso indica que, para **monitorar a temperatura interna do microcontrolador**, é necessário apertar o **botão A** e, para **monitorar o nível sonoro do ambiente**, é precisa apertar o **botão B**.
 
+- Isso indica que, para **monitorar a temperatura interna do microcontrolador**, é necessário apertar o **botão A** e, para **monitorar o nível sonoro do ambiente**, é precisa apertar o **botão B**.
 
-2.  **Monitoramento da Temperatura Interna Microcontrolador (Botão A)**:
+2. **Monitoramento da Temperatura Interna Microcontrolador (Botão A)**:
 
   Ao pressionar o **Botão A**, a cada segundo, será exibido a temperatura interna, em °C, do microcontrolador em tempo real.
 
   Exemplo de exibição no display oled:
+
   ```
     25 42 C
   ```
@@ -83,11 +125,12 @@ Ao executar o código, espera-se o seguinte comportamento:
 
   Ao pressionar o **Botão B enquanto está sendo realizado o monitoramento da temperatura**, o sistema passa a realizar o monitoramento do nível sonoro do ambiente.
 
-3.  **Monitoramento do Nível Sonoro do Ambiente (Botão B)**:
+3. **Monitoramento do Nível Sonoro do Ambiente (Botão B)**:
 
   Ao pressionar o **Botão B**, a cada segundo, será exibido o nível sonoro do ambiente, em dB, em tempo real.
 
   Exemplo de exibição no display oled:
+
   ```
     60 50 dB
   ```
@@ -96,18 +139,20 @@ Ao executar o código, espera-se o seguinte comportamento:
 
   Ao pressionar o **Botão A enquanto está sendo realizado o monitoramento da nível sonoro**, o sistema passa a realizar o monitoramento da temperatura do microcontrolador.
 
-4.  **Execução Concorrente e Controle Responsivo**:
+4. **Execução Concorrente e Controle Responsivo**:
 
-    * As tarefas funcionam de forma independente e concorrente.
+    - As tarefas funcionam de forma independente e concorrente.
 
-    * A suspensão e retomada das tarefas são imediatas e sem afetar as demais execuções.
+    - A suspensão e retomada das tarefas são imediatas e sem afetar as demais execuções.
 
-    * O sistema se mantém em funcionamento contínuo, respondendo aos comandos dos botões indefinidamente.
+    - O sistema se mantém em funcionamento contínuo, respondendo aos comandos dos botões indefinidamente.
 
 ---
 
 ## 🎥 Vídeo Demonstrativo
+
 Veja o vídeo demonstrativo [aqui](https://youtube.com/shorts/6omBiOSpbXo?feature=share).
 
 ## 📜 Licença
+
 GNU GPL-3.0.
