@@ -1,20 +1,25 @@
-#include "button_handler.h"
-#include "display_oled.h"
-#include "hardware/adc.h"
-#include "hardware/irq.h"
-#include "microphone_handler.h"
-#include "rtos_resources.h"
-#include "temperature_handler.h"
-#include <pico/stdlib.h>
-#include <string.h>
+#include "button_handler.h" // Biblioteca de manipulação de botões
+#include "display_oled.h" // Biblioteca de exibição OLED
+#include "hardware/adc.h" // Biblioteca ADC do Pico
+#include "hardware/irq.h" // Biblioteca de interrupções do Pico
+#include "microphone_handler.h" // Biblioteca de manipulação do microfone
+#include "rtos_resources.h" // Biblioteca de recursos do RTOS
+#include "temperature_handler.h" // Biblioteca de manipulação de temperatura
+#include <pico/stdlib.h> // Biblioteca padrão do Pico
+#include <string.h> // Biblioteca de manipulação de strings
 
+// VAriáveis globais para armazenar o tempo do último pressionamento dos botões
 absolute_time_t last_press_time_a = 0;
 absolute_time_t last_press_time_b = 0;
 
+// Estado da máquina de estados
 state_t state = IDLE;
+
+// Handles para as tarefas do microfone e temperatura
 TaskHandle_t mic_handle = NULL;
 TaskHandle_t temp_handle = NULL;
 
+// Callback para lidar com eventos dos botões
 static void buttons_callback(uint gpio, uint32_t events) {
   if (gpio == 5) {
     if (absolute_time_diff_us(last_press_time_a, get_absolute_time()) >
@@ -58,6 +63,7 @@ static void buttons_callback(uint gpio, uint32_t events) {
   }
 }
 
+// Função para inicializar os botões
 void init_buttons() {
   gpio_init(BUTTON_A_PIN);
   gpio_init(BUTTON_B_PIN);

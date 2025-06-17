@@ -1,12 +1,15 @@
-#include "display_oled.h"
-#include "rtos_resources.h"
-#include "semphr.h"
+#include "display_oled.h" // Biblioteca para exibição em OLED
+#include "rtos_resources.h" // Biblioteca de recursos do RTOS
+#include "semphr.h" // Biblioteca de semáforos do FreeRTOS
 #include <stdio.h> // Biblioteca padrão 
 #include <string.h> // Biblioteca para manipulação de strings
 #include "pico/stdlib.h" // Biblioteca padrão pico
 
+// Definição dos pinos I2C
 const uint I2C_SDA = 14;
 const uint I2C_SCL = 15;
+
+// Buffer do display OLED
 uint8_t ssd[ssd1306_buffer_length];
 
 // Função para configuração do display OLED
@@ -61,6 +64,7 @@ void display_oled(float value, char unit[2]) {
     render_on_display(ssd, &frame_area);
 }
 
+// Função para exibir a tela de idle no display OLED
 void display_oled_idle() {
     // Limpeza do buffer do display
     memset(ssd, 0, ssd1306_buffer_length);
@@ -83,6 +87,7 @@ void display_oled_idle() {
     render_on_display(ssd, &frame_area);
 }
 
+// Tarefa para exibir a tela de idle no display OLED
 void idle_display_task(void *params) {
     display_oled_idle();
     vTaskDelete(NULL);

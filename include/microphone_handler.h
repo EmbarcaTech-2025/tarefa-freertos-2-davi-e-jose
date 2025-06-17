@@ -1,10 +1,10 @@
 #ifndef MICROPHONE_HANDLER_H
 #define MICROPHONE_HANDLER_H
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "hardware/adc.h"
-#include "hardware/dma.h"
+#include "FreeRTOS.h" // Biblioteca FreeRTOS
+#include "task.h" // Biblioteca de tarefas do FreeRTOS
+#include "hardware/adc.h" // Biblioteca ADC do Pico
+#include "hardware/dma.h" // Biblioteca DMA do Pico
 
 #define MIC_CHANNEL 2 // Canal ADC do microfone
 #define MIC_ADC_PIN 28 // Pino do ADC
@@ -18,17 +18,24 @@ extern uint dma_channel; // Canal DMA
 extern dma_channel_config dma_cfg; // Configuração do DMA
 extern uint16_t adc_buffer[SAMPLES]; // Buffer de armazenamento de amostras de ADC
 
+// Funções para configurar o ADC 
 void setup_adc();
 
+// Funções para configurar o DMA
 void setup_dma();
 
+// Função para amostrar o microfone
 void sample_mic();
 
+// Função para calcular a potência RMS do sinal do microfone
 float mic_rms();
 
+// Função para converter a potência RMS em decibéis (dB)
 float convert_to_dB(float v_rms);
 
+// Variável de Handle para a tarefa do microfone
 extern TaskHandle_t microphone_task_handle;
 
+// Tarefa para processar o microfone
 void microphone_task(void *pvParameters);
 #endif // MICROPHONE_HANDLER_H

@@ -1,9 +1,9 @@
-#include "microphone_handler.h"
-#include "display_oled.h"
+#include "microphone_handler.h" // Biblioteca de manipulação do microfone
+#include "display_oled.h" // Biblioteca de manipulação do OLED
 #include "pico/stdlib.h" // Biblioteca padrão pico
-#include "rtos_resources.h"
-#include "semphr.h"
-#include <math.h>
+#include "rtos_resources.h" // Biblioteca de recursos do RTOS
+#include "semphr.h" // Biblioteca de semáforos do FreeRTOS
+#include <math.h> // Biblioteca matemática
 #include <stdio.h> // Biblioteca padrão
 
 uint dma_channel;             // Canal DMA
@@ -79,6 +79,7 @@ float convert_to_dB(float v_rms) {
   return 20.0f * log10f(v_rms / ref_voltage); // Cálculo para conversão para dB
 }
 
+// Tarefa para coletar amostras do microfone e exibir o valor em dB no OLED
 void microphone_task(void *pvParameters) {
   while (1) {
     sample_mic();                    // Coleta de amostras do microfone via DMA
